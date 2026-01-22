@@ -1,26 +1,26 @@
 import React from 'react';
 import classNames from 'classnames';
 
-interface Props {
+type Props = {
+  activeTodo: boolean;
   title: string;
   setTitle: (value: string) => void;
-  onSubmit: (e: React.FormEvent) => void;
-  inputRef: React.RefObject<HTMLInputElement>;
   loading: boolean;
-  isAllCompleted: boolean;
-  hasTodos: boolean;
-  onToggleAll: () => void;
-}
+  onTodoAdd: (e: React.FormEvent) => void;
+  focusedElement: React.RefObject<HTMLInputElement>;
+  toggleAll?: () => void;
+  hasTodos?: boolean;
+};
 
 export const Header: React.FC<Props> = ({
+  activeTodo,
   title,
   setTitle,
-  onSubmit,
-  inputRef,
   loading,
-  isAllCompleted,
+  onTodoAdd,
+  focusedElement,
+  toggleAll,
   hasTodos,
-  onToggleAll,
 }) => {
   return (
     <header className="todoapp__header">
@@ -28,24 +28,23 @@ export const Header: React.FC<Props> = ({
         <button
           type="button"
           className={classNames('todoapp__toggle-all', {
-            active: isAllCompleted,
+            active: activeTodo,
           })}
           data-cy="ToggleAllButton"
-          aria-label="Toggle all todos"
-          onClick={onToggleAll}
+          onClick={toggleAll}
         />
       )}
 
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onTodoAdd}>
         <input
           data-cy="NewTodoField"
           type="text"
           className="todoapp__new-todo"
           placeholder="What needs to be done?"
-          ref={inputRef}
           value={title}
-          onChange={e => setTitle(e.target.value)}
+          onChange={event => setTitle(event.target.value)}
           disabled={loading}
+          ref={focusedElement}
         />
       </form>
     </header>

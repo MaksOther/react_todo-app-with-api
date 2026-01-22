@@ -1,25 +1,25 @@
 import React from 'react';
-import { Todo } from '../types/Todo';
 import { TodoItem } from './TodoItem';
+import { Todo } from '../types/Todo';
 
-interface Props {
+type Props = {
   todos: Todo[];
   tempTodo: Todo | null;
-  deletingTodoIds: number[];
-  loadingTodoIds: number[];
   onDelete: (id: number) => void;
+  deleteTodoId: number[];
+  onUpdate: (todo: Todo) => Promise<void>;
   onToggle: (id: number) => void;
-  onUpdate: (id: number, updates: Partial<Todo>) => Promise<void>;
-}
+  loadingTodoIds: number[];
+};
 
 export const TodoList: React.FC<Props> = ({
   todos,
   tempTodo,
-  deletingTodoIds,
-  loadingTodoIds,
-  onToggle,
   onDelete,
+  deleteTodoId,
   onUpdate,
+  onToggle,
+  loadingTodoIds,
 }) => {
   return (
     <section className="todoapp__main" data-cy="TodoList">
@@ -28,11 +28,10 @@ export const TodoList: React.FC<Props> = ({
           todo={todo}
           key={todo.id}
           onDelete={onDelete}
-          onToggle={onToggle}
           onUpdate={onUpdate}
+          onToggle={onToggle}
           isLoading={
-            deletingTodoIds.includes(todo.id) ||
-            loadingTodoIds.includes(todo.id)
+            deleteTodoId.includes(todo.id) || loadingTodoIds.includes(todo.id)
           }
         />
       ))}

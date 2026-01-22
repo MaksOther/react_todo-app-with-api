@@ -1,36 +1,36 @@
-import React from 'react';
 import classNames from 'classnames';
+import React from 'react';
 import { Status } from '../types/Status';
 
-interface Props {
-  activeCount: number;
-  filterStatus: Status;
+type Props = {
+  filter: Status;
+  setFilter: (filter: Status) => void;
   hasCompletedTodos: boolean;
-  onFilterChange: (status: Status) => void;
+  activeTodosCount: number;
   onClearCompleted: () => void;
-}
+};
 
 export const Footer: React.FC<Props> = ({
-  activeCount,
-  filterStatus,
+  filter,
+  setFilter,
   hasCompletedTodos,
-  onFilterChange,
+  activeTodosCount,
   onClearCompleted,
 }) => {
   return (
     <footer className="todoapp__footer" data-cy="Footer">
       <span className="todo-count" data-cy="TodosCounter">
-        {activeCount} items left
+        {activeTodosCount} items left
       </span>
 
       <nav className="filter" data-cy="Filter">
         <a
           href="#/"
           className={classNames('filter__link', {
-            selected: filterStatus === Status.All,
+            selected: filter === Status.All,
           })}
           data-cy="FilterLinkAll"
-          onClick={() => onFilterChange(Status.All)}
+          onClick={() => setFilter(Status.All)}
         >
           All
         </a>
@@ -38,10 +38,10 @@ export const Footer: React.FC<Props> = ({
         <a
           href="#/active"
           className={classNames('filter__link', {
-            selected: filterStatus === Status.Active,
+            selected: filter === Status.Active,
           })}
           data-cy="FilterLinkActive"
-          onClick={() => onFilterChange(Status.Active)}
+          onClick={() => setFilter(Status.Active)}
         >
           Active
         </a>
@@ -49,10 +49,10 @@ export const Footer: React.FC<Props> = ({
         <a
           href="#/completed"
           className={classNames('filter__link', {
-            selected: filterStatus === Status.Completed,
+            selected: filter === Status.Completed,
           })}
           data-cy="FilterLinkCompleted"
-          onClick={() => onFilterChange(Status.Completed)}
+          onClick={() => setFilter(Status.Completed)}
         >
           Completed
         </a>
@@ -63,7 +63,7 @@ export const Footer: React.FC<Props> = ({
         className="todoapp__clear-completed"
         data-cy="ClearCompletedButton"
         disabled={!hasCompletedTodos}
-        onClick={onClearCompleted}
+        onClick={() => onClearCompleted()}
       >
         Clear completed
       </button>
