@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Status } from '../types/Status';
+import { FilterStatus } from '../types/Status';
 
 type Props = {
   filter: Status;
@@ -27,10 +27,10 @@ export const Footer: React.FC<Props> = ({
         <a
           href="#/"
           className={classNames('filter__link', {
-            selected: filter === Status.All,
+            selected: filter === FilterStatus.All,
           })}
           data-cy="FilterLinkAll"
-          onClick={() => setFilter(Status.All)}
+          onClick={() => setFilter(FilterStatus.All)}
         >
           All
         </a>
@@ -38,10 +38,10 @@ export const Footer: React.FC<Props> = ({
         <a
           href="#/active"
           className={classNames('filter__link', {
-            selected: filter === Status.Active,
+            selected: filter === FilterStatus.Active,
           })}
           data-cy="FilterLinkActive"
-          onClick={() => setFilter(Status.Active)}
+          onClick={() => setFilter(FilterStatus.Active)}
         >
           Active
         </a>
@@ -49,10 +49,10 @@ export const Footer: React.FC<Props> = ({
         <a
           href="#/completed"
           className={classNames('filter__link', {
-            selected: filter === Status.Completed,
+            selected: filter === FilterStatus.Completed,
           })}
           data-cy="FilterLinkCompleted"
-          onClick={() => setFilter(Status.Completed)}
+          onClick={() => setFilter(FilterStatus.Completed)}
         >
           Completed
         </a>

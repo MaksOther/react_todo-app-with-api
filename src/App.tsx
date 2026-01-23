@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import classNames from 'classnames';
+
 import { UserWarning } from './UserWarning';
 import {
   addTodo,
@@ -7,18 +9,20 @@ import {
   updateTodo,
   USER_ID,
 } from './api/todos';
+
 import { Todo } from './types/Todo';
-import classNames from 'classnames';
+import { FilterStatus } from './types/Status';
+import { ErrorMessages } from './types/ErrorMessages';
+
 import { Footer } from './components/Footer';
 import { TodoList } from './components/TodoList';
 import { Header } from './components/Header';
-import { Status } from './types/Status';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = React.useState<Todo[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string>('');
-  const [filter, setFilter] = React.useState<Status>(Status.All);
+  const [filter, setFilter] = React.useState<FilterStatus>(FilterStatus.All);
 
   const [title, setTitle] = React.useState<string>('');
   const [tempTodo, setTempTodo] = React.useState<Todo | null>(null);
@@ -32,11 +36,11 @@ export const App: React.FC = () => {
   const activeTodosCount = todos.filter(todo => !todo.completed).length;
 
   const filteredTodos = todos.filter(todo => {
-    if (filter === Status.Completed) {
+    if (filter === FilterStatus.Completed) {
       return todo.completed;
     }
 
-    if (filter === Status.Active) {
+    if (filter === FilterStatus.Active) {
       return !todo.completed;
     }
 
@@ -50,7 +54,7 @@ export const App: React.FC = () => {
     getTodos()
       .then(setTodos)
       .catch(() => {
-        setError('Unable to load todos');
+        setError(ErrorMessages.UnableToLoad);
       })
       .finally(() => {
         setLoading(false);
@@ -81,7 +85,7 @@ export const App: React.FC = () => {
     const titleTrim = title.trim();
 
     if (!titleTrim) {
-      setError('Title should not be empty');
+      setError(ErrorMessages.EmptyTitle);
 
       return;
     }
@@ -89,8 +93,8 @@ export const App: React.FC = () => {
     setLoading(true);
 
     const tempTodoItem: Todo = {
-      userId: USER_ID,
       id: 0,
+      userId: USER_ID,
       title: titleTrim,
       completed: false,
     };
@@ -102,7 +106,7 @@ export const App: React.FC = () => {
         setTodos(prevTodos => [...prevTodos, newTodo]);
         setTitle('');
       })
-      .catch(() => setError('Unable to add a todo'))
+      .catch(() => setError(ErrorMessages.UnableToAdd))
       .finally(() => {
         setTempTodo(null);
         setLoading(false);
@@ -117,7 +121,7 @@ export const App: React.FC = () => {
         setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
         focusedElement.current?.focus();
       })
-      .catch(() => setError('Unable to delete a todo'))
+      .catch(() => setError(ErrorMessages.UnableToDelete))
       .finally(() => {
         setDeleteTodoIds(current => current.filter(todoId => todoId !== id));
       });
@@ -139,7 +143,7 @@ export const App: React.FC = () => {
         setTodos(curr => curr.map(t => (t.id === todo.id ? updatedTodo : t)));
       })
       .catch(errors => {
-        setError('Unable to update a todo');
+        setError(ErrorMessages.UnableToUpdate);
         throw errors;
       })
       .finally(() => {
@@ -171,7 +175,7 @@ export const App: React.FC = () => {
     )
       .then(result => {
         if (result.some(r => r.status === 'rejected')) {
-          setError('Unable to update some todos');
+          setError(ErrorMessages.UnableToUpdateSome);
         }
 
         setTodos(curr =>
