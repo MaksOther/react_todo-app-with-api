@@ -11,6 +11,7 @@ import {
   addTodo,
   deleteTodo,
   getTodos,
+  updateManyTodos,
   updateTodo,
   USER_ID,
 } from './api/todos';
@@ -172,38 +173,27 @@ export const App: React.FC = () => {
   };
 
   const handleToggleAll = () => {
-    const shouldComplete = !areAllCompleted;
+  const shouldComplete = !areAllCompleted;
 
-    const idsToUpdate = todos
-      .filter(todo => todo.completed !== shouldComplete)
-      .map(t => t.id);
+  const itemsToUpdate = todos
+    .filter(todo => todo.completed !== shouldComplete)
+    .map(t => ({ id: t.id, completed: shouldComplete }));
 
-    setProcessingIds(prev => [...prev, ...idsToUpdate]);
+  const idsToUpdate = itemsToUpdate.map(i => i.id);
 
-    Promise.allSettled(
-      todos
-        .filter(todo => idsToUpdate.includes(todo.id))
-        .map(todo => updateTodo({ ...todo, completed: shouldComplete })),
-    )
-      .then(result => {
-        if (result.some(r => r.status === 'rejected')) {
-          setError(ErrorMessages.UnableToUpdateSome);
-        }
+  setProcessingIds(prev => [...prev, ...idsToUpdate]);
 
-        setTodos(curr =>
-          curr.map(todo => {
-            if (idsToUpdate.includes(todo.id)) {
-              return { ...todo, completed: shouldComplete };
-            }
-
-            return todo;
-          }),
-        );
-      })
-      .finally(() => {
-        setProcessingIds(prev => prev.filter(id => !idsToUpdate.includes(id)));
-      });
-  };
+  updateManyTodos(itemsToUpdate)
+    .then((updatedTodosFromBackend) => {
+      setTodos(updatedTodosFromBackend);
+    })
+    .catch(() => {
+      setError(ErrorMessages.UnableToUpdateSome);
+    })
+    .finally(() => {
+      setProcessingIds(prev => prev.filter(id => !idsToUpdate.includes(id)));
+    });
+};
 
   if (!USER_ID) {
     return <UserWarning />;
