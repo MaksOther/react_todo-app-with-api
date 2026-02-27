@@ -23,6 +23,8 @@ export const updateTodo = (todo: Todo) => {
   return client.patch<Todo>(`/todos/${todo.id}`, todo);
 };
 
-export const updateManyTodos = (items: { id: number, completed: boolean }[]) => {
+export const updateManyTodos = (
+  items: { id: number; completed: boolean }[],
+) => {
   return client.patch<Todo[]>(`/todos`, { items });
 };

@@ -173,27 +173,27 @@ export const App: React.FC = () => {
   };
 
   const handleToggleAll = () => {
-  const shouldComplete = !areAllCompleted;
+    const shouldComplete = !areAllCompleted;
 
-  const itemsToUpdate = todos
-    .filter(todo => todo.completed !== shouldComplete)
-    .map(t => ({ id: t.id, completed: shouldComplete }));
+    const itemsToUpdate = todos
+      .filter(todo => todo.completed !== shouldComplete)
+      .map(t => ({ id: t.id, completed: shouldComplete }));
 
-  const idsToUpdate = itemsToUpdate.map(i => i.id);
+    const idsToUpdate = itemsToUpdate.map(i => i.id);
 
-  setProcessingIds(prev => [...prev, ...idsToUpdate]);
+    setProcessingIds(prev => [...prev, ...idsToUpdate]);
 
-  updateManyTodos(itemsToUpdate)
-    .then((updatedTodosFromBackend) => {
-      setTodos(updatedTodosFromBackend);
-    })
-    .catch(() => {
-      setError(ErrorMessages.UnableToUpdateSome);
-    })
-    .finally(() => {
-      setProcessingIds(prev => prev.filter(id => !idsToUpdate.includes(id)));
-    });
-};
+    updateManyTodos(itemsToUpdate)
+      .then(updatedTodosFromBackend => {
+        setTodos(updatedTodosFromBackend);
+      })
+      .catch(() => {
+        setError(ErrorMessages.UnableToUpdateSome);
+      })
+      .finally(() => {
+        setProcessingIds(prev => prev.filter(id => !idsToUpdate.includes(id)));
+      });
+  };
 
   if (!USER_ID) {
     return <UserWarning />;

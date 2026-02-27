@@ -24,7 +24,7 @@ export const TodoList: React.FC<Props> = ({
       {todos.map(todo => (
         <TodoItem
           key={todo.id}
-          x todo={todo}
+          todo={todo}
           onDelete={onDelete}
           onUpdate={onUpdate}
           onToggle={onToggle}
