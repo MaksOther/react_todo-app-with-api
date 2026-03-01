@@ -3,8 +3,8 @@ import React from 'react';
 import { FilterStatus } from '../types/Status';
 
 type Props = {
-  filter: Status;
-  setFilter: (filter: Status) => void;
+  filter: FilterStatus;
+  setFilter: (filter: FilterStatus) => void;
   hasCompletedTodos: boolean;
   activeTodosCount: number;
   onClearCompleted: () => void;
@@ -30,7 +30,10 @@ export const Footer: React.FC<Props> = ({
             selected: filter === FilterStatus.All,
           })}
           data-cy="FilterLinkAll"
-          onClick={() => setFilter(FilterStatus.All)}
+          onClick={e => {
+            e.preventDefault();
+            setFilter(FilterStatus.All);
+          }}
         >
           All
         </a>
@@ -41,7 +44,10 @@ export const Footer: React.FC<Props> = ({
             selected: filter === FilterStatus.Active,
           })}
           data-cy="FilterLinkActive"
-          onClick={() => setFilter(FilterStatus.Active)}
+          onClick={e => {
+            e.preventDefault();
+            setFilter(FilterStatus.Active);
+          }}
         >
           Active
         </a>
@@ -52,7 +58,10 @@ export const Footer: React.FC<Props> = ({
             selected: filter === FilterStatus.Completed,
           })}
           data-cy="FilterLinkCompleted"
-          onClick={() => setFilter(FilterStatus.Completed)}
+          onClick={e => {
+            e.preventDefault();
+            setFilter(FilterStatus.Completed);
+          }}
         >
           Completed
         </a>
