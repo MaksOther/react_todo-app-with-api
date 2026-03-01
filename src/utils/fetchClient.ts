@@ -18,20 +18,39 @@ function request<T>(
 ): Promise<T> {
   const options: RequestInit = { method };
 
+  const headers: Record<string, string> = {};
+
   if (data) {
     // We add body and Content-Type only for the requests with data
     options.body = JSON.stringify(data);
-    options.headers = {
-      'Content-Type': 'application/json; charset=UTF-8',
-    };
+    headers['Content-Type'] = 'application/json; charset=UTF-8';
   }
 
-  // DON'T change the delay it is required for tests
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken) {
+    headers['Authorization'] = `Bearer ${accessToken}`;
+  }
+
+  options.headers = headers;
+
   return wait(100)
     .then(() => fetch(BASE_URL + url, options))
-    .then(response => {
+    .then(async response => {
       if (!response.ok) {
-        throw new Error();
+        let errorData;
+        try {
+          errorData = await response.json();
+        } catch {
+          errorData = null;
+        }
+
+        throw {
+          response: {
+            status: response.status,
+            data: errorData,
+          },
+        };
       }
 
       return response.json();
