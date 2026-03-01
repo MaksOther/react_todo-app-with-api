@@ -1,7 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { MainHeader } from './components/MainHeader';
-import { AccountActivationPage } from './Pages/AccountActivationPage';
 import { RegistrationPage } from './Pages/RegistrationPage';
 import { LoginPage } from './Pages/LoginPage';
 import { RequireAuth } from './components/RequireAuth';
@@ -21,10 +20,6 @@ export const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="registration" element={<RegistrationPage />} />
-            <Route
-              path="activate/:activationToken"
-              element={<AccountActivationPage />}
-            />
             <Route path="login" element={<LoginPage />} />
 
             <Route element={<RequireAuth />}>

@@ -12,6 +12,7 @@ export const AccountActivationPage: React.FC = () => {
   useEffect(() => {
     if (!activationToken) {
       setStatus('error');
+
       return;
     }
 

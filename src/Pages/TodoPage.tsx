@@ -22,7 +22,6 @@ import { TodoList } from '../components/TodoList';
 import { Footer } from '../components/Footer';
 import { ErrorNotification } from '../components/ErrorNotification';
 
-
 export const TodoPage: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState(false);
@@ -30,7 +29,7 @@ export const TodoPage: React.FC = () => {
   const [filter, setFilter] = useState<FilterStatus>(FilterStatus.All);
 
   const [title, setTitle] = useState<string>('');
-  const [tempTodo, setTempTodo] = useState<Todo  | null>(null);
+  const [tempTodo, setTempTodo] = useState<Todo | null>(null);
   const [processingIds, setProcessingIds] = useState<number[]>([]);
 
   const focusedElement = useRef<HTMLInputElement | null>(null);

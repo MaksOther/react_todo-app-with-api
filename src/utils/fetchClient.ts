@@ -29,7 +29,7 @@ function request<T>(
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken) {
-    headers['Authorization'] = `Bearer ${accessToken}`;
+    headers.Authorization = `Bearer ${accessToken}`;
   }
 
   options.headers = headers;
@@ -39,6 +39,7 @@ function request<T>(
     .then(async response => {
       if (!response.ok) {
         let errorData;
+
         try {
           errorData = await response.json();
         } catch {

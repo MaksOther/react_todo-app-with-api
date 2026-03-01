@@ -16,10 +16,13 @@ export const LoginPage: React.FC = () => {
 
     if (!email) {
       setError('Email is required');
+
       return;
     }
+
     if (!password) {
       setError('Password is required');
+
       return;
     }
 
